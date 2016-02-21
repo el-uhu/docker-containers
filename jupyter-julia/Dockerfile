@@ -50,7 +50,7 @@ COPY julia_packages.json /home/nbuser/julia_packages.json
 COPY install_dependencies.jl /home/nbuser/install_dependencies.jl
 RUN julia /home/nbuser/install_dependencies.jl
 COPY juliarc.jl /home/nbuser/.juliarc.jl
-COPY XPPjl /home/nbuser/XPPj
+COPY XPPjl /home/nbuser/XPPjl
 COPY jupyter_notebook_config.py /home/nbuser/.jupyter/jupyter_notebook_config.py
 
 
