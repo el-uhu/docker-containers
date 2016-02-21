@@ -41,16 +41,20 @@ RUN pip install jupyter \
   ipywidgets
 
 RUN sudo useradd -m -d /home/nbuser -s /bin/bash -c "Notebookuser" -U nbuser
+RUN mkdir /home/nbuser/.jupyter
+RUN chown -R nbuser:users /home/nbuser/.jupyter
 
 USER nbuser
 
 COPY julia_packages.json /home/nbuser/julia_packages.json
 COPY install_dependencies.jl /home/nbuser/install_dependencies.jl
+RUN julia /home/nbuser/install_dependencies.jl
 COPY juliarc.jl /home/nbuser/.juliarc.jl
 COPY XPPjl /home/nbuser/XPPjl
+COPY jupyter_notebook_config.py /home/nbuser/.jupyter/jupyter_notebook_config.py
 
-RUN julia /home/nbuser/install_dependencies.jl
 
 EXPOSE 8888
+WORKDIR /home/nbuser
 
 CMD ["julia"]
