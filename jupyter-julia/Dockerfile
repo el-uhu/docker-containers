@@ -45,6 +45,7 @@ RUN mkdir /home/nbuser/.jupyter
 RUN chown -R nbuser:users /home/nbuser/.jupyter
 
 USER nbuser
+RUN mkdir /home/nbuser/notebooks
 
 COPY julia_packages.json /home/nbuser/julia_packages.json
 COPY install_dependencies.jl /home/nbuser/install_dependencies.jl
@@ -55,6 +56,6 @@ COPY jupyter_notebook_config.py /home/nbuser/.jupyter/jupyter_notebook_config.py
 
 
 EXPOSE 8888
-WORKDIR /home/nbuser
+WORKDIR /home/nbuser/notebooks
 
 CMD ["julia"]
