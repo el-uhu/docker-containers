@@ -48,8 +48,11 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
 # Install python requirements
-RUN pip install jupyter \
-  ipywidgets
+RUN pip install jupyter
+RUN pip install ipywidgets
+RUN jupyter nbextension enable --py widgetsnbextension
+RUN git clone https://github.com/ipython-contrib/jupyter_contrib_nbextensions.git jupyter_contrib_nbextensions
+RUN pip install -e jupyter_contrib_nbextensions
 
 # Add user and make home folder
 RUN sudo useradd -m -d /home/nbuser -s /bin/bash -c "Notebookuser" -U nbuser
@@ -58,6 +61,7 @@ RUN chown -R nbuser:users /home/nbuser/.jupyter
 
 # Change user
 USER nbuser
+RUN jupyter contrib nbextension install --user
 # RUN mkdir /home/nbuser/notebooks
 
 # Copy static files
@@ -68,6 +72,8 @@ COPY juliarc.jl /home/nbuser/.juliarc.jl
 RUN git clone https://github.com/novakgroupoxford/XPPjl /home/nbuser/XPPjl
 COPY jupyter_notebook_config.py /home/nbuser/.jupyter/jupyter_notebook_config.py
 COPY start.sh /home/nbuser/start.sh
+
+
 
 # Clone
 RUN git clone https://github.com/el-uhu/thesis-notebooks.git /home/nbuser/thesis-notebooks
