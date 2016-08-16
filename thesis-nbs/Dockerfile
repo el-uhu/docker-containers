@@ -69,14 +69,16 @@ COPY julia_packages.json /home/nbuser/julia_packages.json
 COPY install_dependencies.jl /home/nbuser/install_dependencies.jl
 RUN julia /home/nbuser/install_dependencies.jl
 COPY juliarc.jl /home/nbuser/.juliarc.jl
+
 RUN git clone https://github.com/novakgroupoxford/XPPjl /home/nbuser/XPPjl
+RUN git clone https://github.com/el-uhu/thesis-notebooks.git /home/nbuser/thesis-notebooks
+RUN git clone https://github.com/novakgroupoxford/PPSIM.git /home/nbuser/PPSIM
+RUN git clone https://github.com/novakgroupoxford/2015_Mirkovic_et_al.git /home/nbuser/2015_Mirkovic_et_al
+RUN git clone https://github.com/novakgroupoxford/2016_Cundell_et_al.git /home/nbuser/2016_Cundell_et_al
 COPY jupyter_notebook_config.py /home/nbuser/.jupyter/jupyter_notebook_config.py
 COPY start.sh /home/nbuser/start.sh
-
-
-
-# Clone
-RUN git clone https://github.com/el-uhu/thesis-notebooks.git /home/nbuser/thesis-notebooks
+COPY precompile_key_packages.jl /home/nbuser/precompile_key_packages.jl
+RUN julia /home/nbuser/precompile_key_packages.jl
 
 EXPOSE 8888
 WORKDIR /home/nbuser/thesis-notebooks
