@@ -80,6 +80,8 @@ COPY start.sh /home/nbuser/start.sh
 COPY precompile_key_packages.jl /home/nbuser/precompile_key_packages.jl
 RUN julia /home/nbuser/precompile_key_packages.jl
 
+COPY table.txt /home/nbuser/thesis-notebooks/Chapter5/data/bigtable/table.txt
+
 EXPOSE 8888
 WORKDIR /home/nbuser/thesis-notebooks
 
