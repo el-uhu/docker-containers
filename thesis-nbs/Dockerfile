@@ -80,8 +80,15 @@ COPY start.sh /home/nbuser/start.sh
 COPY precompile_key_packages.jl /home/nbuser/precompile_key_packages.jl
 RUN julia /home/nbuser/precompile_key_packages.jl
 
-COPY table.txt /home/nbuser/thesis-notebooks/Chapter5/data/bigtable/table.txt
+COPY table.txt /home/nbuser/thesis-notebooks/Chapter6/data/bigtable/table.txt
+COPY table_processed.txt /home/nbuser/thesis-notebooks/Chapter6/data/table_processed.txt
 
+USER root
+RUN chown -R nbuser:nbuser /home/nbuser/thesis-notebooks
+
+USER nbuser
+RUN touch ~/.bashrc
+RUN echo "export TERM=dumb" >> ~/.bashrc
 EXPOSE 8888
 WORKDIR /home/nbuser/thesis-notebooks
 
