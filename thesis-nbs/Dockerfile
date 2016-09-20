@@ -43,13 +43,14 @@ RUN apt-get install -yq --no-install-recommends \
   python-numpy \
   python-matplotlib \
   && apt-get clean
-
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
+
 
 # Install python requirements
 RUN pip install jupyter
 RUN pip install ipywidgets
+RUN pip install xlrd
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN git clone https://github.com/ipython-contrib/jupyter_contrib_nbextensions.git jupyter_contrib_nbextensions
 RUN pip install -e jupyter_contrib_nbextensions
@@ -58,6 +59,12 @@ RUN pip install -e jupyter_contrib_nbextensions
 RUN sudo useradd -m -d /home/nbuser -s /bin/bash -c "Notebookuser" -U nbuser
 RUN mkdir /home/nbuser/.jupyter
 RUN chown -R nbuser:users /home/nbuser/.jupyter
+
+#Install XPPAut
+# RUN wget http://www.math.pitt.edu/~bard/bardware/binary/latest/xpplinux.tgz
+# RUN mkdir /xppaut
+# RUN tar -xvf xpplinux.tgz
+# RUN rm xpplinux.tgz
 
 # Change user
 USER nbuser
@@ -73,8 +80,7 @@ COPY juliarc.jl /home/nbuser/.juliarc.jl
 RUN git clone https://github.com/novakgroupoxford/XPPjl /home/nbuser/XPPjl
 RUN git clone https://github.com/el-uhu/thesis-notebooks.git /home/nbuser/thesis-notebooks
 RUN git clone https://github.com/novakgroupoxford/PPSIM.git /home/nbuser/PPSIM
-RUN git clone https://github.com/novakgroupoxford/2015_Mirkovic_et_al.git /home/nbuser/2015_Mirkovic_et_al
-RUN git clone https://github.com/novakgroupoxford/2016_Cundell_et_al.git /home/nbuser/2016_Cundell_et_al
+RUN git clone https://github.com/el-uhu/IDAT /home/nbuser/IDAT
 COPY jupyter_notebook_config.py /home/nbuser/.jupyter/jupyter_notebook_config.py
 COPY start.sh /home/nbuser/start.sh
 COPY precompile_key_packages.jl /home/nbuser/precompile_key_packages.jl
@@ -84,6 +90,7 @@ COPY table.txt /home/nbuser/thesis-notebooks/Chapter6/data/bigtable/table.txt
 COPY table_processed.txt /home/nbuser/thesis-notebooks/Chapter6/data/table_processed.txt
 
 USER root
+RUN apt-get install xppaut
 RUN chown -R nbuser:nbuser /home/nbuser/thesis-notebooks
 
 USER nbuser
